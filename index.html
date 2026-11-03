@@ -487,20 +487,25 @@
     }
 
     function nextProblem() {
+      // 1. Ocultamos paneles y habilitamos botones
+      document.getElementById('feedback-panel').classList.remove('show');
+      buttonsDisabled = false;
+
+      // 2. Generamos la nueva operación ANTES de imprimirla
+      currentData = (currentMode === 'facil') ? generateEasy() : generateCombined();
+      
+      // 3. Pintamos la operación
       const displayEl = document.getElementById('problem-display');
       displayEl.innerHTML = currentData.q;
 
-      // Adaptador visual inteligente
+      // 4. Adaptador visual inteligente para operaciones largas
       if (currentData.q.length > 11) {
         displayEl.classList.add('long-math');
       } else {
         displayEl.classList.remove('long-math');
       }
-            buttonsDisabled = false;
 
-      currentData = (currentMode === 'facil') ? generateEasy() : generateCombined();
-      document.getElementById('problem-display').innerHTML = currentData.q;
-
+      // 5. Asignamos las respuestas a los botones
       const optionsArray = getOptions(currentData.ans);
       currentData.options = optionsArray;
 
