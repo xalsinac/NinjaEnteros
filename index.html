@@ -170,14 +170,24 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: clamp(3.5rem, 12vw, 5.5rem);
+      font-size: clamp(3.2rem, 12vw, 5.5rem);
       font-weight: 900;
       font-family: monospace;
       letter-spacing: -2px;
       text-align: center;
-      padding: 1rem;
+      padding: 0.5rem;
       color: var(--text-main);
       position: relative;
+      /* ESTO ES LO NUEVO: Evita los saltos de línea */
+      white-space: nowrap; 
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* NUEVA CLASE: Para encoger operaciones combinadas largas */
+    #problem-display.long-math {
+      font-size: clamp(1.4rem, 7vw, 4rem);
+      letter-spacing: -1px;
     }
 
     /* BURBUJAS DE OPCIONES */
@@ -477,8 +487,16 @@
     }
 
     function nextProblem() {
-      document.getElementById('feedback-panel').classList.remove('show');
-      buttonsDisabled = false;
+      const displayEl = document.getElementById('problem-display');
+      displayEl.innerHTML = currentData.q;
+
+      // Adaptador visual inteligente
+      if (currentData.q.length > 11) {
+        displayEl.classList.add('long-math');
+      } else {
+        displayEl.classList.remove('long-math');
+      }
+            buttonsDisabled = false;
 
       currentData = (currentMode === 'facil') ? generateEasy() : generateCombined();
       document.getElementById('problem-display').innerHTML = currentData.q;
